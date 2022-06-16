@@ -217,7 +217,7 @@ namespace EventManagementSystem
             sqlDataAdapter.Fill(dataTable);
             if (dataTable.Rows.Count > 0)
             {
-                Customer.userId = Convert.ToInt32(dataTable.Rows[0][0]);
+               
                 return true;
             }
             return false;
