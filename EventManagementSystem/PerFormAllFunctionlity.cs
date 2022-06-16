@@ -166,11 +166,20 @@ namespace EventManagementSystem
                 Console.WriteLine("Enter your Address ");
                 string usertype = "customers";
                 string address = Console.ReadLine();
-                string sql = "insert into users values('" + email + "','" + name + "','" + usertype + "','" + address + "')";
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sql, conn);
-                DataTable dataTable = new DataTable();
-                sqlDataAdapter.Fill(dataTable);
-                Console.WriteLine("Account Created Successfully");
+                if (!checkCustomerExit(email))
+                {
+                    string sql = "insert into users values('" + email + "','" + name + "','" + usertype + "','" + address + "')";
+                    SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sql, conn);
+                    DataTable dataTable = new DataTable();
+                    sqlDataAdapter.Fill(dataTable);
+                    Console.WriteLine("Account Created Successfully");
+
+                }
+                else
+                {
+                    Console.WriteLine("User Email Already Exists");
+                    Console.WriteLine();
+                }
 
 
             }
@@ -194,6 +203,21 @@ namespace EventManagementSystem
             if(dataTable.Rows.Count > 0)
             {
                Customer.userId = Convert.ToInt32(dataTable.Rows[0][0]);
+                return true;
+            }
+            return false;
+        }
+        private bool checkCustomerExit(string email)
+        {
+            
+            string type = "customers";
+            string sql = "select * from users where usermail='" + email + "'  and usertype='" + type + "'";
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sql, conn);
+            DataTable dataTable = new DataTable();
+            sqlDataAdapter.Fill(dataTable);
+            if (dataTable.Rows.Count > 0)
+            {
+                Customer.userId = Convert.ToInt32(dataTable.Rows[0][0]);
                 return true;
             }
             return false;
